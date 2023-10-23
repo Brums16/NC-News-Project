@@ -7,6 +7,7 @@ import './App.css'
 import HomePage from './components/HomePage'
 import ArticlesPage from './components/ArticlesPage'
 import UserPage from './components/UserPage'
+import SingleArticlePage from './components/SingleArticlePage'
 
 
 
@@ -18,7 +19,9 @@ function App() {
     <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/articles" element={<ArticlesPage />} />
+        <Route path="/articles/:articleid" element={<SingleArticlePage />} />
         <Route path="/user" element={<UserPage />} />
+
       </Routes>
 
     
