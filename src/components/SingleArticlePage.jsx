@@ -4,17 +4,16 @@ import { useParams } from 'react-router-dom'
 
 function SingleArticlePage() {
 
-const [currentArticle, setCurrentArticle] = useState({})
+const [article, setArticle] = useState({})
 const [comments, setComments] = useState([])
+const [vote, setVote] = useState("none")
 
 useEffect(()=> {
     fetchArticle().then((response) => response.json()).then(({article}) => {
-
-        setCurrentArticle(article)
+        setArticle(article)
     })
 
     fetchComments().then((response)=> response.json()).then(({comments}) => {
-
       setComments(comments)
   })
 
@@ -29,10 +28,35 @@ const fetchArticle = () => {
 const fetchComments = () => {
   return fetch(`https://nc-news-z0zw.onrender.com/api/articles/${articleid}/comments`)
   }
-const upVote = () => {
-
+const changeVoteArticle = (value) => {
+  return fetch(`https://nc-news-z0zw.onrender.com/api/articles/${articleid}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ inc_votes: value}),
+  })
 }
-const downVote = () => {
+
+const upVoteArticle = (event) => {
+  event.preventDefault()
+  setVote("up")
+  changeVoteArticle(1).then((response) => response.json()).then((response) => console.log(response))
+  let numVotes = article.votes
+  setArticle({...article, votes: numVotes + 1})
+}
+const downVoteArticle = (event) => {
+  event.preventDefault()
+  setVote("down")
+  changeVoteArticle(-1).then((response) => response.json()).then((response) => console.log(response))
+  let numVotes = article.votes
+  setArticle({...article, votes: numVotes - 1})
+}
+
+const upVoteComment = (event) => {
+}
+
+const downVoteComment = (event) => {
 
 }
 
@@ -40,26 +64,33 @@ const downVote = () => {
     <section className="single-article">
     <nav className="single-article-title">
     <div className="single-article-votes">
-    <button onClick={upVote}>▲</button>
-    <p>Votes: {currentArticle.votes}</p>
-    <button onClick={downVote}>▼</button>
+    <button onClick={upVoteArticle} type="submit" className='vote-button'>▲</button>
+    <p>Votes: {article.votes}</p>
+    <button onClick={downVoteArticle} type="submit" className='vote-button'>▼</button>
       </div>
       
-    <h3>{currentArticle.title}</h3><a href="#comments">Comments: {currentArticle.comment_count}</a>
+    <h3>{article.title}</h3><a href="#comments">Comments: {article.comment_count}</a>
     </nav>
-    <p>Posted at: {currentArticle.created_at} by {currentArticle.author}</p>  
-    <img src={currentArticle.article_img_url} alt={`picture related to ${currentArticle.topic}`}/>
+    <p>Posted at: {article.created_at} by {article.author}</p>  
+    <img src={article.article_img_url} alt={`picture related to ${article.topic}`}/>
     <article>
-    {currentArticle.body}
+    {article.body}
       </article>
 
     <h3>Comments</h3>
     <section className="comments-section" id="comments">
     {comments.map((comment) => {
               return (
-                  <div key = {comment.article_id} className="single-comment">
-                    <p>Posted at: {comment.created_at} by {comment.author}</p> <p>Votes: {comment.votes}</p>
+                  <div key = {comment.comment_id} className="single-comment">
+                    <p className="single-comment-title">Posted at: {comment.created_at} by {comment.author}</p> 
+                    <section className = "single-comment-content">
+                      <div> 
+                        <button onClick={upVoteComment} type="submit" className='vote-button'>▲</button>
+                        <p>Votes: {comment.votes}</p>
+                        <button onClick={downVoteArticle} type="submit" className='vote-button'>▼</button>
+                      </div>
                     <article>{comment.body}</article>
+                    </section>
                   </div>
                   
               )

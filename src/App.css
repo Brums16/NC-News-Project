@@ -6,9 +6,7 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-*{
-  border: 1px solid black
-}
+
 
 header {
   background-color: red;
@@ -49,7 +47,16 @@ nav {
 }
 
 .single-article-title {
+
+  justify-content: space-between;
+}
+
+.vote-button {
+  color: red;
+  border: none;
+}
+
+.single-comment-content {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
 }
