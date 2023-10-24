@@ -37,8 +37,8 @@ const downVote = () => {
 }
 
   return (
-    <>
-    <div className="single-article-title">
+    <section className="single-article">
+    <nav className="single-article-title">
     <div className="single-article-votes">
     <button onClick={upVote}>▲</button>
     <p>Votes: {currentArticle.votes}</p>
@@ -46,26 +46,26 @@ const downVote = () => {
       </div>
       
     <h3>{currentArticle.title}</h3><a href="#comments">Comments: {currentArticle.comment_count}</a>
-    </div>
+    </nav>
     <p>Posted at: {currentArticle.created_at} by {currentArticle.author}</p>  
-    <img src={currentArticle.article_img_url} />
-    <p>
+    <img src={currentArticle.article_img_url} alt={`picture related to ${currentArticle.topic}`}/>
+    <article>
     {currentArticle.body}
-      </p>
+      </article>
 
     <h3>Comments</h3>
     <section className="comments-section" id="comments">
     {comments.map((comment) => {
               return (
                   <div key = {comment.article_id} className="single-comment">
-                    <p>Posted at: {comment.created_at} by {comment.author}</p> <p>Votes: {comment.votes}</p> <p></p>
-                    <p>{comment.body}</p>
+                    <p>Posted at: {comment.created_at} by {comment.author}</p> <p>Votes: {comment.votes}</p>
+                    <article>{comment.body}</article>
                   </div>
                   
               )
           })} 
           </section>
-      </>
+      </section>
   )
 }
 
