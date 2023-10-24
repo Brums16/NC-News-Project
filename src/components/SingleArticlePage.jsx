@@ -4,17 +4,16 @@ import { useParams } from 'react-router-dom'
 
 function SingleArticlePage() {
 
-const [currentArticle, setCurrentArticle] = useState({})
+const [article, setArticle] = useState({})
 const [comments, setComments] = useState([])
+const [vote, setVote] = useState(0)
 
 useEffect(()=> {
     fetchArticle().then((response) => response.json()).then(({article}) => {
-
-        setCurrentArticle(article)
+        setArticle(article)
     })
 
     fetchComments().then((response)=> response.json()).then(({comments}) => {
-
       setComments(comments)
   })
 
@@ -29,43 +28,83 @@ const fetchArticle = () => {
 const fetchComments = () => {
   return fetch(`https://nc-news-z0zw.onrender.com/api/articles/${articleid}/comments`)
   }
-const upVote = () => {
-
+const changeVoteArticle = (value) => {
+  return fetch(`https://nc-news-z0zw.onrender.com/api/articles/${articleid}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ inc_votes: value}),
+  })
 }
-const downVote = () => {
+
+const upVoteArticle = (event) => {
+  if (vote ===  1){
+    console.log("already upvoted")
+    return
+  }
+  event.preventDefault()
+  changeVoteArticle(1).then(({status}) => status === 200 ? setVote((currentVote)=> currentVote + 1) : setVote("unavailable"))
+  let numVotes = article.votes
+  setArticle({...article, votes: numVotes + 1})
+}
+const downVoteArticle = (event) => {
+  if (vote ===  -1){
+    console.log("already downvoted")
+    return
+  }
+  event.preventDefault()
+  changeVoteArticle(-1).then(({status}) => status === 200 ? setVote((currentVote)=> currentVote - 1) : setVote("unavailable"))
+  let numVotes = article.votes
+  setArticle({...article, votes: numVotes - 1})
+}
+
+// only issue remaining with votes is user being able to refresh the page then vote again, will handle this with usercontext later
+
+const upVoteComment = (event) => {
+}
+
+const downVoteComment = (event) => {
 
 }
 
   return (
-    <>
-    <div className="single-article-title">
+    <section className="single-article">
+    <nav className="single-article-title">
     <div className="single-article-votes">
-    <button onClick={upVote}>▲</button>
-    <p>Votes: {currentArticle.votes}</p>
-    <button onClick={downVote}>▼</button>
+    <button onClick={upVoteArticle} type="submit" className = {vote === 1 ? "vote-button-clicked" : "vote-button-unclicked"}>▲</button>
+    {vote === "unavailable" ? <p>Voting unavailable at this time</p> : <p>Votes: {article.votes}</p> }
+    <button onClick={downVoteArticle} type="submit" className={vote === -1 ? "vote-button-clicked" : "vote-button-unclicked"}>▼</button>
       </div>
       
-    <h3>{currentArticle.title}</h3><a href="#comments">Comments: {currentArticle.comment_count}</a>
-    </div>
-    <p>Posted at: {currentArticle.created_at} by {currentArticle.author}</p>  
-    <img src={currentArticle.article_img_url} />
-    <p>
-    {currentArticle.body}
-      </p>
+    <h3>{article.title}</h3><a href="#comments">Comments: {article.comment_count}</a>
+    </nav>
+    <p>Posted at: {article.created_at} by {article.author}</p> 
+    <img src={article.article_img_url} alt={`picture related to ${article.topic}`}/>
+    <article>
+    {article.body}
+      </article>
 
     <h3>Comments</h3>
     <section className="comments-section" id="comments">
     {comments.map((comment) => {
               return (
-                  <div key = {comment.article_id} className="single-comment">
-                    <p>Posted at: {comment.created_at} by {comment.author}</p> <p>Votes: {comment.votes}</p> <p></p>
-                    <p>{comment.body}</p>
+                  <div key = {comment.comment_id} className="single-comment">
+                    <p className="single-comment-title">Posted at: {comment.created_at} by {comment.author}</p> 
+                    <section className = "single-comment-content">
+                      <div> 
+                        <button onClick={upVoteComment} type="submit" className='vote-button'>▲</button>
+                        <p>Votes: {comment.votes}</p>
+                        <button onClick={downVoteComment} type="submit" className='vote-button'>▼</button>
+                      </div>
+                    <article>{comment.body}</article>
+                    </section>
                   </div>
                   
               )
           })} 
           </section>
-      </>
+      </section>
   )
 }
 
