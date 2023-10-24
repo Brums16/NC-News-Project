@@ -13,7 +13,6 @@ useEffect(()=> {
 }, [])
 
 const fetchArticles = () => {
-    console.log("in fetch articles")
     return fetch('https://nc-news-z0zw.onrender.com/api/articles')
     }
 
@@ -23,8 +22,8 @@ const fetchArticles = () => {
     <div className="articles">
           {allArticles.map((article) => {
               return (
-                <Link to={`/articles/${article.article_id}`}>
                   <div key = {article.article_id} className="article-section-small">
+                    <Link to={`/articles/${article.article_id}`}>
                         <div className="article-section-small-topic-author">
                         <p>In {article.topic} | Posted by {article.author}</p>
                             </div>
@@ -34,8 +33,9 @@ const fetchArticles = () => {
                         </div>
                       
                       <p>Comments: {article.comment_count} Votes: {article.votes}</p>
+                      </Link>
                   </div>
-                  </Link>
+                  
               )
           })} 
 

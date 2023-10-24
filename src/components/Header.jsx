@@ -15,7 +15,7 @@ function Header() {
   </div>
 
         <h1>
-            NC NEWS
+        <Link to="/" className = 'header-link'>NC News</Link>
         </h1>
         <h3>
         <Link to="/user" className = 'header-link'>User</Link>
