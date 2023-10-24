@@ -6,7 +6,7 @@ function SingleArticlePage() {
 
 const [article, setArticle] = useState({})
 const [comments, setComments] = useState([])
-const [vote, setVote] = useState("none")
+const [vote, setVote] = useState(0)
 
 useEffect(()=> {
     fetchArticle().then((response) => response.json()).then(({article}) => {
@@ -39,19 +39,27 @@ const changeVoteArticle = (value) => {
 }
 
 const upVoteArticle = (event) => {
+  if (vote ===  1){
+    console.log("already upvoted")
+    return
+  }
   event.preventDefault()
-  setVote("up")
-  changeVoteArticle(1).then((response) => response.json()).then((response) => console.log(response))
+  changeVoteArticle(1).then(({status}) => status === 200 ? setVote((currentVote)=> currentVote + 1) : setVote("unavailable"))
   let numVotes = article.votes
   setArticle({...article, votes: numVotes + 1})
 }
 const downVoteArticle = (event) => {
+  if (vote ===  -1){
+    console.log("already downvoted")
+    return
+  }
   event.preventDefault()
-  setVote("down")
-  changeVoteArticle(-1).then((response) => response.json()).then((response) => console.log(response))
+  changeVoteArticle(-1).then(({status}) => status === 200 ? setVote((currentVote)=> currentVote - 1) : setVote("unavailable"))
   let numVotes = article.votes
   setArticle({...article, votes: numVotes - 1})
 }
+
+// only issue remaining with votes is user being able to refresh the page then vote again, will handle this with usercontext later
 
 const upVoteComment = (event) => {
 }
@@ -64,14 +72,14 @@ const downVoteComment = (event) => {
     <section className="single-article">
     <nav className="single-article-title">
     <div className="single-article-votes">
-    <button onClick={upVoteArticle} type="submit" className='vote-button'>▲</button>
-    <p>Votes: {article.votes}</p>
-    <button onClick={downVoteArticle} type="submit" className='vote-button'>▼</button>
+    <button onClick={upVoteArticle} type="submit" className = {vote === 1 ? "vote-button-clicked" : "vote-button-unclicked"}>▲</button>
+    {vote === "unavailable" ? <p>Voting unavailable at this time</p> : <p>Votes: {article.votes}</p> }
+    <button onClick={downVoteArticle} type="submit" className={vote === -1 ? "vote-button-clicked" : "vote-button-unclicked"}>▼</button>
       </div>
       
     <h3>{article.title}</h3><a href="#comments">Comments: {article.comment_count}</a>
     </nav>
-    <p>Posted at: {article.created_at} by {article.author}</p>  
+    <p>Posted at: {article.created_at} by {article.author}</p> 
     <img src={article.article_img_url} alt={`picture related to ${article.topic}`}/>
     <article>
     {article.body}
@@ -87,7 +95,7 @@ const downVoteComment = (event) => {
                       <div> 
                         <button onClick={upVoteComment} type="submit" className='vote-button'>▲</button>
                         <p>Votes: {comment.votes}</p>
-                        <button onClick={downVoteArticle} type="submit" className='vote-button'>▼</button>
+                        <button onClick={downVoteComment} type="submit" className='vote-button'>▼</button>
                       </div>
                     <article>{comment.body}</article>
                     </section>

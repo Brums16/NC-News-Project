@@ -51,9 +51,14 @@ nav {
   justify-content: space-between;
 }
 
-.vote-button {
+.vote-button-unclicked {
   color: red;
-  border: none;
+  background-color: white;
+}
+
+.vote-button-clicked {
+  color: white;
+  background-color: red;
 }
 
 .single-comment-content {
