@@ -10,6 +10,40 @@
   border: 1px solid black
 }
 
+header {
+  background-color: red;
+  color: white;
+}
+
+a {
+  all: inherit;
+  cursor: pointer
+}
+
+.article-section-small {
+  width: 50vw;
+  margin: auto
+}
+
 .article-img-small {
   width: 15vw;
+}
+
+
+
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.header-links-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.header-link {
+  text-decoration: none;
+  color: white
 }
