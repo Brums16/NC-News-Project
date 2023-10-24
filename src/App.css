@@ -47,3 +47,9 @@ nav {
   text-decoration: none;
   color: white
 }
+
+.single-article-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

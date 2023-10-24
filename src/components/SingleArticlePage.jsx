@@ -29,11 +29,25 @@ const fetchArticle = () => {
 const fetchComments = () => {
   return fetch(`https://nc-news-z0zw.onrender.com/api/articles/${articleid}/comments`)
   }
+const upVote = () => {
+
+}
+const downVote = () => {
+
+}
 
   return (
     <>
-    <h3>{currentArticle.title}</h3>
-    <p>Posted at: {currentArticle.created_at} by {currentArticle.author}</p> <p>Votes: {currentArticle.votes}</p> <a href="#comments">Comments: {currentArticle.comment_count}</a>
+    <div className="single-article-title">
+    <div className="single-article-votes">
+    <button onClick={upVote}>▲</button>
+    <p>Votes: {currentArticle.votes}</p>
+    <button onClick={downVote}>▼</button>
+      </div>
+      
+    <h3>{currentArticle.title}</h3><a href="#comments">Comments: {currentArticle.comment_count}</a>
+    </div>
+    <p>Posted at: {currentArticle.created_at} by {currentArticle.author}</p>  
     <img src={currentArticle.article_img_url} />
     <p>
     {currentArticle.body}
