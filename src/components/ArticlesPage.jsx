@@ -1,21 +1,24 @@
 import React from 'react'
 import { useState, useEffect, useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { UserContext } from '../contexts/user'
 
 function ArticlesPage() {
  
 const [allArticles, setAllArticles] = useState([])
 const {user, setUser} = useContext(UserContext)
+const [searchParams, setSearchParams] = useSearchParams()
+
+const topic = searchParams.get("topic")
 
 useEffect(()=> {
     fetchArticles().then((response) => response.json()).then(({articles}) => {
         setAllArticles(articles)
     })
-}, [])
+}, [searchParams])
 
 const fetchArticles = () => {
-    return fetch('https://nc-news-z0zw.onrender.com/api/articles')
+    return fetch(`https://nc-news-z0zw.onrender.com/api/articles${topic ? `?topic=${topic}` : ""}`)
     }
 
 

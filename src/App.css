@@ -65,3 +65,9 @@ nav {
   display: flex;
   flex-direction: row;
 }
+
+.topics-in-navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}

@@ -2,6 +2,7 @@ import React from 'react'
 import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../contexts/user';
+import Navbar from './Navbar';
 
 function Header() {
 
@@ -16,6 +17,7 @@ function Header() {
       <div className='header-links-div'>
   <Link to="/" className = 'header-link'>Home</Link>
   <Link to="/articles" className = "header-link">Articles</Link>
+  <Link to="/topics" className = "header-link">Topics</Link>
   </div>
 
         <h1>
@@ -25,6 +27,7 @@ function Header() {
         <Link to="/user" className = 'header-link'>{user.name}</Link>
         </h3>
         </nav>
+        <Navbar/>
     </header>
   )
 }
