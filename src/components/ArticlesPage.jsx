@@ -10,20 +10,36 @@ const {user, setUser} = useContext(UserContext)
 const [searchParams, setSearchParams] = useSearchParams()
 
 const topic = searchParams.get("topic")
+let sortBy = searchParams.get("sort_by")
 
 useEffect(()=> {
     fetchArticles().then((response) => response.json()).then(({articles}) => {
         setAllArticles(articles)
     })
-}, [searchParams])
+}, [searchParams, topic, sortBy])
 
 const fetchArticles = () => {
-    return fetch(`https://nc-news-z0zw.onrender.com/api/articles${topic ? `?topic=${topic}` : ""}`)
+    return fetch(`https://nc-news-z0zw.onrender.com/api/articles${topic ? `?topic=${topic}` : ""}${sortBy ? topic ? `&sort_by=${sortBy}`: `?sort_by=${sortBy}` : ""}`)
     }
+
+const changeSorting = (event) => {
+    event.preventDefault()
+    console.log(event.target.value)
+    // I want this function to take the user to the correct URL, at the moment sorting is only working when typed into URL
+    
+}
 
 
   return (
     <><p>On the articles page</p>
+    <form>
+  <label htmlFor="sort-by">Sort by:</label>
+  <select id="sort-by" name="sort-by" onChange={changeSorting}>
+    <option value="created_at">Date</option>
+    <option value="comment_count">Comment Count</option>
+    <option value="votes">Votes</option>
+  </select>     
+</form>
     <div className="articles">
           {allArticles.map((article) => {
               return (
