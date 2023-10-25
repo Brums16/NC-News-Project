@@ -8,7 +8,9 @@ function SingleArticlePage() {
 const [article, setArticle] = useState({})
 const [comments, setComments] = useState([])
 const [vote, setVote] = useState("available")
+const [newComment, setNewComment] = useState("")
 const {user, setUser} = useContext(UserContext)
+
 
 useEffect(()=> {
     fetchArticle().then((response) => response.json()).then(({article}) => {
@@ -20,7 +22,7 @@ useEffect(()=> {
   })
 
     
-}, [])
+}, [comments])
 
 
 const {articleid} = useParams()
@@ -37,6 +39,15 @@ const changeVoteArticle = (value) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ inc_votes: value}),
+  })
+}
+const postComment = () => {
+  return fetch(`https://nc-news-z0zw.onrender.com/api/articles/${articleid}/comments`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({username: user.name, body: newComment}),
   })
 }
 
@@ -64,7 +75,19 @@ const downVoteArticle = (event) => {
   
 }
 
+const changeNewComment = (event) => {
+  setNewComment(event.target.value)
+}
 
+const submitNewComment = (event) => {
+  event.preventDefault()
+  if (newComment.length === 0){
+    return
+  }
+  postComment(newComment)  
+  setComments(comments)
+
+}
 
 const upVoteComment = (event) => {
 }
@@ -92,6 +115,11 @@ const downVoteComment = (event) => {
 
     <h3>Comments</h3>
     <section className="comments-section" id="comments">
+    <form>
+        <label htmlFor="newComment"></label>
+        <input type="text" id="newComment" onChange={changeNewComment} value={newComment} placeholder='Add a comment...'/>
+        <button type="submit" onClick={submitNewComment} className='plus-button'>+</button>
+    </form>
     {comments.map((comment) => {
               return (
                   <div key = {comment.comment_id} className="single-comment">
@@ -108,6 +136,7 @@ const downVoteComment = (event) => {
                   
               )
           })} 
+          
           </section>
       </section>
   )
