@@ -1,9 +1,13 @@
 import React from 'react'
-import { useState } from 'react'
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { UserContext } from '../contexts/user';
 
 function Header() {
-    
+
+  const {user, setUser} = useContext(UserContext)
+
+
 
   return (
     <header>
@@ -18,7 +22,7 @@ function Header() {
         <Link to="/" className = 'header-link'>NC News</Link>
         </h1>
         <h3>
-        <Link to="/user" className = 'header-link'>User</Link>
+        <Link to="/user" className = 'header-link'>{user.name}</Link>
         </h3>
         </nav>
     </header>

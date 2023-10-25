@@ -5,7 +5,7 @@ function HomePage() {
     
 
   return (
-    <p>On the homepage</p>
+    <p>WELCOME TO NC NEWS!</p>
   )
 }
 

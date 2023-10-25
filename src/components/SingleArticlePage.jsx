@@ -1,12 +1,14 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
+import { UserContext } from '../contexts/user'
 
 function SingleArticlePage() {
 
 const [article, setArticle] = useState({})
 const [comments, setComments] = useState([])
-const [vote, setVote] = useState(0)
+const [vote, setVote] = useState("available")
+const {user, setUser} = useContext(UserContext)
 
 useEffect(()=> {
     fetchArticle().then((response) => response.json()).then(({article}) => {
@@ -39,27 +41,30 @@ const changeVoteArticle = (value) => {
 }
 
 const upVoteArticle = (event) => {
-  if (vote ===  1){
-    console.log("already upvoted")
+  event.preventDefault()
+  let numVotes = article.votes
+  if (user.votesOnArticles[articleid] === 1){
+    setArticle({...article, votes: numVotes - 1})
+    changeVoteArticle(-1).then(({status}) => status === 200 ? setUser({...user, votesOnArticles: {...user.votesOnArticles, [articleid]: 0}}) : setVote("unavailable"))
     return
   }
-  event.preventDefault()
-  changeVoteArticle(1).then(({status}) => status === 200 ? setVote((currentVote)=> currentVote + 1) : setVote("unavailable"))
-  let numVotes = article.votes
   setArticle({...article, votes: numVotes + 1})
+  changeVoteArticle(1).then(({status}) => status === 200 ? setUser({...user, votesOnArticles: {...user.votesOnArticles, [articleid]: 1}}) : setVote("unavailable"))
 }
 const downVoteArticle = (event) => {
-  if (vote ===  -1){
-    console.log("already downvoted")
+  event.preventDefault()
+  let numVotes = article.votes
+  if (user.votesOnArticles[articleid] ===  -1){
+    setArticle({...article, votes: numVotes + 1})
+    changeVoteArticle(1).then(({status}) => status === 200 ? setUser({...user, votesOnArticles: {...user.votesOnArticles, [articleid]: 0}}) : setVote("unavailable"))
     return
   }
-  event.preventDefault()
-  changeVoteArticle(-1).then(({status}) => status === 200 ? setVote((currentVote)=> currentVote - 1) : setVote("unavailable"))
-  let numVotes = article.votes
   setArticle({...article, votes: numVotes - 1})
+  changeVoteArticle(-1).then(({status}) => status === 200 ? setUser({...user, votesOnArticles: {...user.votesOnArticles, [articleid]: -1}}) : setVote("unavailable"))
+  
 }
 
-// only issue remaining with votes is user being able to refresh the page then vote again, will handle this with usercontext later
+
 
 const upVoteComment = (event) => {
 }
@@ -72,9 +77,9 @@ const downVoteComment = (event) => {
     <section className="single-article">
     <nav className="single-article-title">
     <div className="single-article-votes">
-    <button onClick={upVoteArticle} type="submit" className = {vote === 1 ? "vote-button-clicked" : "vote-button-unclicked"}>▲</button>
+    <button onClick={upVoteArticle} type="submit" className = {user.votesOnArticles[articleid] === 1 ? "vote-button-clicked" : "vote-button-unclicked"}>▲</button>
     {vote === "unavailable" ? <p>Voting unavailable at this time</p> : <p>Votes: {article.votes}</p> }
-    <button onClick={downVoteArticle} type="submit" className={vote === -1 ? "vote-button-clicked" : "vote-button-unclicked"}>▼</button>
+    <button onClick={downVoteArticle} type="submit" className={user.votesOnArticles[articleid] === -1 ? "vote-button-clicked" : "vote-button-unclicked"}>▼</button>
       </div>
       
     <h3>{article.title}</h3><a href="#comments">Comments: {article.comment_count}</a>

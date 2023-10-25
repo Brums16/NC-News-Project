@@ -1,11 +1,20 @@
 import React from 'react'
-import { useState } from 'react'
+import { useContext } from 'react'
+import { UserContext } from '../contexts/user'
+
 
 function UserPage() {
-    
+  
+  const {user, setUser} = useContext(UserContext)
 
   return (
-    <p>On the user page</p>
+    <div>
+          <p>Welcome to your user page {user.name}</p>
+    <p>Your articles: {user.articles.join(",")}</p>
+    <p>Your comments: {user.comments.join(",")}</p>
+    <p>Your votes on articles: {JSON.stringify(user.votesOnArticles)}</p>
+    <p>Your votes on comments: {JSON.stringify(user.votesOnComments)}</p>
+    </div>
   )
 }
 

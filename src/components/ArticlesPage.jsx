@@ -1,10 +1,12 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { UserContext } from '../contexts/user'
 
 function ArticlesPage() {
  
 const [allArticles, setAllArticles] = useState([])
+const {user, setUser} = useContext(UserContext)
 
 useEffect(()=> {
     fetchArticles().then((response) => response.json()).then(({articles}) => {
