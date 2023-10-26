@@ -23,7 +23,7 @@ const [allTopics, setAllTopics] = useState([])
                            <section key = {topic.slug} className="topic-section">
                              <Link to={`/articles?topic=${topic.slug}`}>
                               
-                                 <p>{topic.slug.toUpperCase()}</p>
+                                 <h3>{topic.slug.toUpperCase()}</h3>
                                  <p>{topic.description}</p>
          
 

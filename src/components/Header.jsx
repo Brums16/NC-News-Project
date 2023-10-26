@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../contexts/user';
 import Navbar from './Navbar';
-import accountIcon from '../images/account-icon.jpg'
+import accountIcon from '../images/account-25.svg'
 
 function Header() {
 
@@ -31,7 +31,7 @@ function Header() {
         
         
         <h3 className="header-link">
-        <Link to="/user"> {user.name}</Link>
+        <Link to="/user"> {user.name} <img src={accountIcon} id="account-icon"/></Link>
         </h3>
         </div>
         </nav>

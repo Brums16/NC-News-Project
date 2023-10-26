@@ -5,7 +5,8 @@ import { useState } from 'react';
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState({name: "cooljmessy", articles: [8,10,35,17], comments: [9
+  const [user, setUser] = useState({name: "cooljmessy", avatar_url: "https://vignette.wikia.nocookie.net/mrmen/images/1/1a/MR_MESSY_4A.jpg/revision/latest/scale-to-width-down/250?cb=20170730171002", 
+  articles: [8,10,35,17], comments: [9
 ,22
 ,23
 ,33

@@ -127,13 +127,16 @@ const removeComment = (event) => {
     <button onClick={downVoteArticle} type="submit" className={user.votesOnArticles[articleid] === -1 ? "vote-button-clicked" : "vote-button-unclicked"}>▼</button>
       </div>
       
-    <h3>{article.title}</h3><a href="#comments">Comments: {article.comment_count}</a>
+    <div><h3>{article.title}</h3><p>Posted at: {article.created_at} by {article.author}</p> </div><a href="#comments">Comments: {article.comment_count}</a>
     </nav>
-    <p>Posted at: {article.created_at} by {article.author}</p> 
-    <img src={article.article_img_url} alt={`picture related to ${article.topic}`}/>
-    <article>
+    
+    <section id="single-article-body-image">
+    <article id="single-article-body">
     {article.body}
       </article>
+    <img src={article.article_img_url} alt={`picture related to ${article.topic}` } id="single-article-image"/>
+    </section>
+    
 
     <h3>Comments</h3>
     <section className="comments-section" id="comments">
