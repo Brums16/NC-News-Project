@@ -19,10 +19,8 @@ useEffect(()=> {
 
     fetchComments().then((response)=> response.json()).then(({comments}) => {
       setComments(comments)
-  })
-
-    
-}, [comments])
+  })    
+}, [newComment])
 
 
 const {articleid} = useParams()
@@ -50,6 +48,17 @@ const postComment = () => {
     body: JSON.stringify({username: user.name, body: newComment}),
   })
 }
+
+const deleteComment = (id) => {
+  return fetch(`https://nc-news-z0zw.onrender.com/api/comments/${id}`, 
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+  }
+
 
 const upVoteArticle = (event) => {
   event.preventDefault()
@@ -84,8 +93,9 @@ const submitNewComment = (event) => {
   if (newComment.length === 0){
     return
   }
+  setNewComment("")
   postComment(newComment)  
-  setComments(comments)
+  
 
 }
 
@@ -93,6 +103,20 @@ const upVoteComment = (event) => {
 }
 
 const downVoteComment = (event) => {
+
+}
+
+const removeComment = (event) => {
+  event.preventDefault()
+  const filteredComments = comments.filter((comment)=>{
+    return comment.comment_id !== Number(event.target.id)})
+  setComments(filteredComments)
+  deleteComment(Number(event.target.id))
+    //optimistic render and remove the comment onclick
+    // delete the comment from the user object in usercontext
+    //send delete request to server to delete the comment
+
+    
 
 }
 
@@ -131,6 +155,7 @@ const downVoteComment = (event) => {
                         <button onClick={downVoteComment} type="submit" className='vote-button'>▼</button>
                       </div>
                     <article>{comment.body}</article>
+                    {comment.author === user.name ? <button id = {comment.comment_id} onClick={removeComment} type="submit" className='remove-comment-button'>Delete</button> : ""}
                     </section>
                   </div>
                   

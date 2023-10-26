@@ -13,6 +13,11 @@ header {
   color: white;
 }
 
+footer {
+  background-color: red;
+  color: white;
+}
+
 a {
   all: inherit;
   cursor: pointer
@@ -20,7 +25,8 @@ a {
 
 .article-section-small {
   width: 50vw;
-  margin: auto
+  margin: auto;
+  margin-top: 5vh;
 }
 
 .article-img-small {

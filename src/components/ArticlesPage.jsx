@@ -24,17 +24,15 @@ const fetchArticles = () => {
 
 const changeSorting = (event) => {
     event.preventDefault()
-    console.log(event.target.value)
-    // I want this function to take the user to the correct URL, at the moment sorting is only working when typed into URL
-    
-}
+    window.location.href= topic ? `?topic=${topic}&sort_by=${event.target.value}`: `?sort_by=${event.target.value}`
+} 
 
 
   return (
     <><p>On the articles page</p>
     <form>
   <label htmlFor="sort-by">Sort by:</label>
-  <select id="sort-by" name="sort-by" onChange={changeSorting}>
+  <select id="sort-by" name="sort-by" onChange={changeSorting} value={sortBy}>
     <option value="created_at">Date</option>
     <option value="comment_count">Comment Count</option>
     <option value="votes">Votes</option>
@@ -46,10 +44,10 @@ const changeSorting = (event) => {
                   <div key = {article.article_id} className="article-section-small">
                     <Link to={`/articles/${article.article_id}`}>
                         <div className="article-section-small-topic-author">
-                        <p>In {article.topic} | Posted by {article.author}</p>
+                        <p>In {article.topic} | Posted by {article.author} at {article.created_at}</p>
                             </div>
                       <div className="article-section-small-title-img">
-                        <p>{article.title}</p>
+                        <h3>{article.title}</h3>
                         <img className = "article-img-small" src={article.article_img_url}></img>
                         </div>
                       
