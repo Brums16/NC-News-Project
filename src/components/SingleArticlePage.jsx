@@ -94,9 +94,7 @@ const submitNewComment = (event) => {
     return
   }
   setNewComment("")
-  postComment(newComment)  
-  
-
+  postComment(newComment) 
 }
 
 const upVoteComment = (event) => {
