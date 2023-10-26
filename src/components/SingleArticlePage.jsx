@@ -2,6 +2,8 @@ import React from 'react'
 import { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import { UserContext } from '../contexts/user'
+import commentIcon from '../images/comment.png'
+
 
 function SingleArticlePage() {
 
@@ -123,11 +125,12 @@ const removeComment = (event) => {
     <nav className="single-article-title">
     <div className="single-article-votes">
     <button onClick={upVoteArticle} type="submit" className = {user.votesOnArticles[articleid] === 1 ? "vote-button-clicked" : "vote-button-unclicked"}>▲</button>
-    {vote === "unavailable" ? <p>Voting unavailable at this time</p> : <p>Votes: {article.votes}</p> }
+    {vote === "unavailable" ? <p>Voting unavailable at this time</p> : <p>{article.votes}</p> }
     <button onClick={downVoteArticle} type="submit" className={user.votesOnArticles[articleid] === -1 ? "vote-button-clicked" : "vote-button-unclicked"}>▼</button>
       </div>
       
-    <div><h3>{article.title}</h3><p>Posted at: {article.created_at} by {article.author}</p> </div><a href="#comments">Comments: {article.comment_count}</a>
+    <div><h3>{article.title}</h3><p>Posted at: {article.created_at} by {article.author}</p> </div>
+    <a href="#comments" id="comments-link"><img src={commentIcon} style={{height: "3vh"}}/> {article.comment_count}</a>
     </nav>
     
     <section id="single-article-body-image">

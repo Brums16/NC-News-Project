@@ -2,6 +2,7 @@ import React from 'react'
 import { useState, useEffect, useContext } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { UserContext } from '../contexts/user'
+import commentIcon from '../images/comment.png'
 
 function ArticlesPage() {
  
@@ -66,15 +67,15 @@ const changeOrder = (event) => {
           return (
             <div key={article.article_id} className="article-section-small">
               <Link to={`/articles/${article.article_id}`}>
-                <div className="article-section-small-topic-author">
+                <div className="article-section-small-div-section">
                   <p>In {article.topic} | Posted by {article.author} at {article.created_at}</p>
                 </div>
-                <div className="article-section-small-title-img">
+                <div className="article-section-small-div-section">
                   <h3>{article.title}</h3>
                   <img className="article-img-small" src={article.article_img_url}></img>
                 </div>
 
-                <p>Comments: {article.comment_count} Votes: {article.votes}</p>
+                <p className="article-section-small-div-section">  ↑↓ {article.votes} <img src={commentIcon} style={{height: "1.5vh"}}/> {article.comment_count}</p>
               </Link>
             </div>
 
