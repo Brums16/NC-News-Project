@@ -3,6 +3,7 @@ import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../contexts/user';
 import Navbar from './Navbar';
+import accountIcon from '../images/account-icon.jpg'
 
 function Header() {
 
@@ -14,21 +15,27 @@ function Header() {
     <header>
      
       <nav>
-      <div className='header-links-div'>
-  <Link to="/" className = 'header-link'>Home</Link>
-  <Link to="/articles" className = "header-link">Articles</Link>
-  <Link to="/topics" className = "header-link">Topics</Link>
-  </div>
 
-        <h1>
-        <Link to="/" className = 'header-link'>NC News</Link>
-        </h1>
+
         <h3>
-        <Link to="/user" className = 'header-link'>{user.name}</Link>
+        <Link to="/" className = 'header-home-link'>NC News</Link>
         </h3>
+        
+        <div id="header-links-div">
+        <h3 className="header-link">
+        <Link to="/articles">Articles</Link>
+        </h3>
+        <h3 className="header-link">
+        <Link to="/topics">Topics</Link>
+        </h3>
+        
+        
+        <h3 className="header-link">
+        <Link to="/user"> {user.name}</Link>
+        </h3>
+        </div>
         </nav>
-        <Navbar/>
-    </header>
+        </header>
   )
 }
 

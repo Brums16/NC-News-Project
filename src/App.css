@@ -1,21 +1,25 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-
+body {
+  margin: 0;
+  background-color: whitesmoke;
+}
 
 header {
-  background-color: red;
-  color: white;
+  color: red;
+  margin-bottom: 10vh;
+  
 }
 
 footer {
   background-color: red;
   color: white;
+  margin-top: 10vh;
+  width: 100%;
 }
 
 a {
@@ -38,18 +42,25 @@ a {
 nav {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around
 }
 
-.header-links-div {
+#header-links-div {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  color: black;
+  width: 20%
 }
 
-.header-link {
+.header-link:hover {
+  text-decoration: underline 2px solid red;
+}
+
+.header-home-link {
   text-decoration: none;
-  color: white
+  color: red;
+  font-size: xx-large;
 }
 
 .single-article-title {
@@ -76,4 +87,13 @@ nav {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+}
+
+#user-link {
+  
+  color: black;
+}
+
+#account-icon {
+  height: 3vh;
 }
