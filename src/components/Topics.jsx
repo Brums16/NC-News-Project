@@ -21,8 +21,8 @@ const [allTopics, setAllTopics] = useState([])
                    {allTopics.map((topic) => {
                        return (
                            
-                             <Link to={`/articles?topic=${topic.slug}`}>
-                              <section key = {topic.slug} className="topic-section">
+                             <Link to={`/articles?topic=${topic.slug}` } id={topic.slug}>
+                              <section key = {topic.slug} className="topic-section" >
                                  <h3>{topic.slug.toUpperCase()}</h3>
                                  <p>{topic.description}</p>
          

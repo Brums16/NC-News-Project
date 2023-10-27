@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import { UserContext } from '../contexts/user'
 import commentIcon from '../images/comment.png'
+import { fetchArticle, fetchComments, changeVoteArticle, postComment } from '../utils/apicalls'
 
 
 function SingleArticlePage() {
@@ -15,41 +16,18 @@ const {user, setUser} = useContext(UserContext)
 
 
 useEffect(()=> {
-    fetchArticle().then((response) => response.json()).then(({article}) => {
+    fetchArticle(articleid).then((response) => response.json()).then(({article}) => {
         setArticle(article)
     })
 
-    fetchComments().then((response)=> response.json()).then(({comments}) => {
+    fetchComments(articleid).then((response)=> response.json()).then(({comments}) => {
       setComments(comments)
   })    
 }, [newComment])
 
 
 const {articleid} = useParams()
-const fetchArticle = () => {
-    return fetch(`https://nc-news-z0zw.onrender.com/api/articles/${articleid}`)
-    }
-const fetchComments = () => {
-  return fetch(`https://nc-news-z0zw.onrender.com/api/articles/${articleid}/comments`)
-  }
-const changeVoteArticle = (value) => {
-  return fetch(`https://nc-news-z0zw.onrender.com/api/articles/${articleid}`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ inc_votes: value}),
-  })
-}
-const postComment = () => {
-  return fetch(`https://nc-news-z0zw.onrender.com/api/articles/${articleid}/comments`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({username: user.name, body: newComment}),
-  })
-}
+
 
 const deleteComment = (id) => {
   return fetch(`https://nc-news-z0zw.onrender.com/api/comments/${id}`, 
@@ -67,22 +45,22 @@ const upVoteArticle = (event) => {
   let numVotes = article.votes
   if (user.votesOnArticles[articleid] === 1){
     setArticle({...article, votes: numVotes - 1})
-    changeVoteArticle(-1).then(({status}) => status === 200 ? setUser({...user, votesOnArticles: {...user.votesOnArticles, [articleid]: 0}}) : setVote("unavailable"))
+    changeVoteArticle(articleid, -1).then(({status}) => status === 200 ? setUser({...user, votesOnArticles: {...user.votesOnArticles, [articleid]: 0}}) : setVote("unavailable"))
     return
   }
   setArticle({...article, votes: numVotes + 1})
-  changeVoteArticle(1).then(({status}) => status === 200 ? setUser({...user, votesOnArticles: {...user.votesOnArticles, [articleid]: 1}}) : setVote("unavailable"))
+  changeVoteArticle(articleid, 1).then(({status}) => status === 200 ? setUser({...user, votesOnArticles: {...user.votesOnArticles, [articleid]: 1}}) : setVote("unavailable"))
 }
 const downVoteArticle = (event) => {
   event.preventDefault()
   let numVotes = article.votes
   if (user.votesOnArticles[articleid] ===  -1){
     setArticle({...article, votes: numVotes + 1})
-    changeVoteArticle(1).then(({status}) => status === 200 ? setUser({...user, votesOnArticles: {...user.votesOnArticles, [articleid]: 0}}) : setVote("unavailable"))
+    changeVoteArticle(articleid, 1).then(({status}) => status === 200 ? setUser({...user, votesOnArticles: {...user.votesOnArticles, [articleid]: 0}}) : setVote("unavailable"))
     return
   }
   setArticle({...article, votes: numVotes - 1})
-  changeVoteArticle(-1).then(({status}) => status === 200 ? setUser({...user, votesOnArticles: {...user.votesOnArticles, [articleid]: -1}}) : setVote("unavailable"))
+  changeVoteArticle(articleid, -1).then(({status}) => status === 200 ? setUser({...user, votesOnArticles: {...user.votesOnArticles, [articleid]: -1}}) : setVote("unavailable"))
   
 }
 
@@ -96,7 +74,7 @@ const submitNewComment = (event) => {
     return
   }
   setNewComment("")
-  postComment(newComment) 
+  postComment(articleid, user, newComment) 
 }
 
 const upVoteComment = (event) => {
@@ -112,11 +90,7 @@ const removeComment = (event) => {
     return comment.comment_id !== Number(event.target.id)})
   setComments(filteredComments)
   deleteComment(Number(event.target.id))
-    //optimistic render and remove the comment onclick
-    // delete the comment from the user object in usercontext
-    //send delete request to server to delete the comment
-
-    
+ 
 
 }
 

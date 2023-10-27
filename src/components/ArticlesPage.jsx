@@ -3,6 +3,8 @@ import { useState, useEffect, useContext } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { UserContext } from '../contexts/user'
 import commentIcon from '../images/comment.png'
+import { fetchArticles } from '../utils/apicalls'
+
 
 function ArticlesPage() {
  
@@ -26,14 +28,11 @@ useEffect(()=> {
   if (sortBy !==null && order !==null){
     setSearchParams({sortBy: sortBy, order: order})
   }
-  fetchArticles().then((response) => response.json()).then(({articles}) => {
+  fetchArticles(topic, sortBy, order).then((response) => 
+    response.json()).then(({articles}) => {
     setAllArticles(articles)
 })
 }, [topic, sortBy, order])
-
-const fetchArticles = () => {
-    return fetch(`https://nc-news-z0zw.onrender.com/api/articles${topic ? `?topic=${topic}` : ""}${sortBy ? topic ? `&sort_by=${sortBy}`: `?sort_by=${sortBy}` : ""}${order ? sortBy ? `&order=${order}` : topic ? `&order=${order}` : `?order=${order}` : ""}`)
-    }
 
 const changeSorting = (event) => {
     event.preventDefault()
@@ -63,6 +62,7 @@ const changeOrder = (event) => {
       </select>
       <button onClick={changeOrder}>↑↓</button>
     </form><div className="articles">
+
         {allArticles.map((article) => {
           return (
             <div key={article.article_id} className="article-section-small">
@@ -81,6 +81,7 @@ const changeOrder = (event) => {
 
           )
         })}
+        
 
       </div></>
 

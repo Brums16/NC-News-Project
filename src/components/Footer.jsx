@@ -6,7 +6,11 @@ function Footer() {
 
   return (
     <footer>
-        Some information in the footer
+        
+          <h4>NC NEWS 2023 COMPANY NO 007007 © 2023</h4>
+          <p>FOLLOW US</p>
+          <p>Privacy Policy</p>
+         
     </footer>
   )
 }
