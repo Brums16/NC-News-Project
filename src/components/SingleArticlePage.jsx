@@ -154,12 +154,13 @@ const removeComment = (event) => {
                     <p className="single-comment-title">Posted at: {comment.created_at} by {comment.author}</p> 
                     <section className = "single-comment-content">
                       <div> 
-                        <button onClick={upVoteComment} type="submit" className='vote-button'>▲</button>
-                        <p>Votes: {comment.votes}</p>
-                        <button onClick={downVoteComment} type="submit" className='vote-button'>▼</button>
+                        <button onClick={upVoteComment} type="submit" className='vote-button-unclicked'>▲</button>
+                        <p>{comment.votes}</p>
+                        <button onClick={downVoteComment} type="submit" className='vote-button-unclicked'>▼</button>
                       </div>
-                    <article>{comment.body}</article>
-                    {comment.author === user.name ? <button id = {comment.comment_id} onClick={removeComment} type="submit" className='remove-comment-button'>Delete</button> : ""}
+                    <article id="comment-body">{comment.body} <br />
+                    {comment.author === user.name ? <button id = {comment.comment_id} onClick={removeComment} type="submit" className='remove-comment-button'>Delete</button> : ""}</article>
+                    
                     </section>
                   </div>
                   

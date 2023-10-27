@@ -20,16 +20,16 @@ const [allTopics, setAllTopics] = useState([])
             <div className="topics">
                    {allTopics.map((topic) => {
                        return (
-                           <section key = {topic.slug} className="topic-section">
+                           
                              <Link to={`/articles?topic=${topic.slug}`}>
-                              
+                              <section key = {topic.slug} className="topic-section">
                                  <h3>{topic.slug.toUpperCase()}</h3>
                                  <p>{topic.description}</p>
          
 
-                               
+                                 </section>
                                </Link>
-                           </section>
+
                            
                        )
                    })} 
